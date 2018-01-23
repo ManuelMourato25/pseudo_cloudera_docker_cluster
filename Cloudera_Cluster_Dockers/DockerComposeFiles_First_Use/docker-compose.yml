@@ -1,0 +1,81 @@
+version: '3.4'
+services:
+   datanode1:
+     build:
+       context: ./DataNodes
+       dockerfile: Dockerfile
+     image: nomadtech/datanode1
+     container_name: datanode1
+     hostname: datanode1.rocm
+     privileged: true
+     networks:
+       dev_cluster:
+         ipv4_address: 192.168.123.5
+     volumes:
+       - /etc/hosts:/etc/hosts
+       - /etc/Cloudera_Pseudo_Cluster/datanode1/data:/data
+       - /etc/Cloudera_Pseudo_Cluster/datanode1/mysql:/var/lib/mysql
+       - /etc/Cloudera_Pseudo_Cluster/datanode1/mysql_files/my.cnf:/etc/mysql_files
+     command: bash -c "sudo chkconfig sshd on && sudo service sshd start && tail -f /dev/null"
+   datanode2:
+     build:
+       context: ./DataNodes
+       dockerfile: Dockerfile
+     image: nomadtech/datanode2
+     container_name: datanode2
+     hostname: datanode2.rocm
+     privileged: true
+     networks:
+       dev_cluster:
+         ipv4_address: 192.168.123.2
+     volumes:
+       - /etc/hosts:/etc/hosts
+       - /etc/Cloudera_Pseudo_Cluster/datanode2/data:/data
+       - /etc/Cloudera_Pseudo_Cluster/datanode2/mysql:/var/lib/mysql
+       - /etc/Cloudera_Pseudo_Cluster/datanode2/mysql_files:/etc/mysql_files
+     command: bash -c "sudo chkconfig sshd on && sudo service sshd start && tail -f /dev/null"
+   datanode3:
+     build:
+       context: ./DataNodes
+       dockerfile: Dockerfile
+     image: nomadtech/datanode3
+     container_name: datanode3
+     hostname: datanode3.rocm
+     privileged: true
+     networks:
+       dev_cluster:
+         ipv4_address: 192.168.123.3
+     volumes:
+       - /etc/hosts:/etc/hosts
+       - /etc/Cloudera_Pseudo_Cluster/datanode3/data:/data
+       - /etc/Cloudera_Pseudo_Cluster/datanode3/mysql:/var/lib/mysql
+       - /etc/Cloudera_Pseudo_Cluster/datanode3/mysql_files:/etc/mysql_files
+     command: bash -c "sudo chkconfig sshd on && sudo service sshd start && tail -f /dev/null"
+   headnode1:
+     build:
+       context: ./HeadNodes
+       dockerfile: Dockerfile
+     image: nomadtech/headnode1
+     ports:
+       - 30001:7180
+       - 30002:8888
+     container_name: headnode1
+     hostname: headnode1.rocm
+     privileged: true
+     networks:
+       dev_cluster:
+         ipv4_address: 192.168.123.4
+     volumes:
+       - /etc/hosts:/etc/hosts
+       - /etc/Cloudera_Pseudo_Cluster/headnode1/data:/data
+       - /etc/Cloudera_Pseudo_Cluster/headnode1/mysql:/var/lib/mysql
+       - /etc/Cloudera_Pseudo_Cluster/headnode1/mysql_files:/etc/mysql_files
+     command: bash -c "sudo chkconfig sshd on && sudo service sshd start && sudo service mysqld start && sudo service cloudera-scm-server-db start && sudo service cloudera-scm-server start && tail -f /dev/null"  
+networks:
+  dev_cluster:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.123.0/24
+
+

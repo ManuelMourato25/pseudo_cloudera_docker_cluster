@@ -1,0 +1,5 @@
+192.168.123.2 datanode2.rocm
+192.168.123.3 datanode3.rocm
+192.168.123.4 headnode1.rocm
+192.168.123.5 datanode1.rocm
+
