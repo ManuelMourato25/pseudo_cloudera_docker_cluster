@@ -1,9 +1,7 @@
 # Pseudo Dockerized Cloudera Distribution Cluster
 
 ## Summary 
-A repository meant to store all files related to the pseudo cluster created with the intent of conducting tests in the Nomadtech infrastructure. 
-Specifically, the repository contains:   
-
+This project contains scripts to create a fully dockerized Cloudera Cluster, on a single host, allowing Big Data developers to test frameworks in a low cost and controlled environment. 
 ## What you will find
 * Dockerfiles for Cluster Headnodes and for Datanodes
 * A Docker Compose file with IP, network, hostanames and volume mappings, one for a first install and another for prior usages
