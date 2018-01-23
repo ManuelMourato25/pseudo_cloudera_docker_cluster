@@ -59,6 +59,46 @@ $ cp DockerComposeFiles_Regular_Use/docker-compose.yml .
 ````
 
 
-## Customizing your Cluster
+## Adding Cluster Nodes (in need of improvement)
 
-If you want to add or remove nodes, just change the `docker-compose.yml` file accordingly: add a new container,assign a new ip, a new hostname, etc, and just run the up.sh script again
+If you want to add  new hosts after creating the initial cluster, you need to follow these steps:
+```
+# Add the following service to your docker-compose.yml
+  <NEW CONTAINER NAME>:
+     build:
+       context: ./DataNodes
+       dockerfile: Dockerfile
+     image: <NEW IMAGE NAME>
+     container_name: <NEW CONTAINER NAME>
+     hostname: <NEW HOSTNAME NAME>
+     privileged: true
+     networks:
+       dev_cluster:
+         ipv4_address: <NEW IP IN THE NETWORK>
+     volumes:
+       - /etc/hosts:/etc/hosts
+       - /etc/Cloudera_Pseudo_Cluster/<NEW CONTAINER NAME>/data:/data
+       - /etc/Cloudera_Pseudo_Cluster/<NEW CONTAINER NAME>/mysql:/var/lib/mysql
+       - /etc/Cloudera_Pseudo_Cluster/<NEW CONTAINER NAME>/mysql_files/my.cnf:/etc/mysql_files
+     command: bash -c "sudo chkconfig sshd on && sudo service sshd start && tail -f /dev/null"
+
+# Add the NEW IP you have chosen to /etc/hosts , with the corresponding NEW HOSTNAME mapping
+
+# Run the following command inside the same directory
+$ sudo docker-compose up -d <NEW CONTAINER NAME>
+# Your host will be built and started
+
+# Proceed to the Cloudera Manager UI, go to Hosts -> Add New Host to Cluster
+# You will then go through the instalation of the new cluster node, much like you did for the initial cluster
+
+# Once the instalation is done, you need to go to each Service-> Instances and give the roles you want to the new cluster host
+# Deploy client configurations and restart the services if needed
+
+# Once you are done, run the following for the headnodes and the new datanode you added:
+$ sudo docker commit <CONTAINER_ID> <IMAGE_NAME>
+
+# Finally, go to the docker-compose.yml, add the following to the command option for the new service: && sudo service cloudera-scm-agent start, and then run
+$ cp docker-compose.yml DockerComposeFiles_Regular_Use
+``` 
+      
+

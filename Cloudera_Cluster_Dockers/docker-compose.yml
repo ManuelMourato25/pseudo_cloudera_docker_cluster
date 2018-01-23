@@ -4,9 +4,9 @@ services:
      build:
        context: ./DataNodes
        dockerfile: Dockerfile
-     image: nomadtech/datanode1
+     image: image/datanode1
      container_name: datanode1
-     hostname: datanode1.rocm
+     hostname: datanode1.cluster
      privileged: true
      networks:
        dev_cluster:
@@ -21,9 +21,9 @@ services:
      build:
        context: ./DataNodes
        dockerfile: Dockerfile
-     image: nomadtech/datanode2
+     image: image/datanode2
      container_name: datanode2
-     hostname: datanode2.rocm
+     hostname: datanode2.cluster
      privileged: true
      networks:
        dev_cluster:
@@ -38,9 +38,9 @@ services:
      build:
        context: ./DataNodes
        dockerfile: Dockerfile
-     image: nomadtech/datanode3
+     image: image/datanode3
      container_name: datanode3
-     hostname: datanode3.rocm
+     hostname: datanode3.cluster
      privileged: true
      networks:
        dev_cluster:
@@ -55,12 +55,12 @@ services:
      build:
        context: ./HeadNodes
        dockerfile: Dockerfile
-     image: nomadtech/headnode1
+     image: image/headnode1
      ports:
        - 30001:7180
        - 30002:8888
      container_name: headnode1
-     hostname: headnode1.rocm
+     hostname: headnode1.cluster
      privileged: true
      networks:
        dev_cluster:
