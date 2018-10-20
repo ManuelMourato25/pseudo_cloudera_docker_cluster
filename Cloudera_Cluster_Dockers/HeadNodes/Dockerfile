@@ -20,7 +20,7 @@ RUN yum -y update; yum clean all
 RUN yum -y install python-devel
 RUN yum -y install epel-release; yum clean all
 RUN yum -y install python-pip; yum clean all
-RUN wget https://bootstrap.pypa.io/get-pip.py
+RUN wget https://bootstrap.pypa.io/2.6/get-pip.py
 RUN python get-pip.py
 RUN yum install -y zlib-devel
 RUN yum install -y bzip2-devel
